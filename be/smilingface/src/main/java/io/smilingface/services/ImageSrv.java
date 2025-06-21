@@ -9,6 +9,8 @@ public class ImageSrv {
         this.taskExecutor = taskExecutor;
     }
 
-    
+    public void imageProcess(String topic) {
+        this.taskExecutor.submit(topic);
+    }
 
 }

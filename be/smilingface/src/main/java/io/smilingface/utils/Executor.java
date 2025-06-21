@@ -1,12 +1,11 @@
 package io.smilingface.utils;
 
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class Executor implements IExecutor {
@@ -38,6 +37,8 @@ public class Executor implements IExecutor {
                                 if (this.googleLimiter.tryAcquire()) {
                                     try {
                                         helper.analyzeImage(url);
+                                    } catch (Exception err) {
+
                                     } finally {
                                         this.googleLimiter.release();
                                     }
