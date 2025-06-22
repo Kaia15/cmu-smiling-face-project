@@ -1,14 +1,18 @@
 package io.smilingface.utils;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.springframework.stereotype.Component;
 
 import com.google.cloud.vision.v1.AnnotateImageRequest;
 import com.google.cloud.vision.v1.AnnotateImageResponse;
@@ -23,6 +27,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.protobuf.ByteString;
 
+@Component
 public class Helper {
 
     public final String baseWikiUrl = "";
@@ -88,10 +93,14 @@ public class Helper {
         return imageUrls;
     }
 
-    public void analyzeImage(String filePath) throws IOException {
+    public List<Map<String, String>> analyzeImage(String filePath) throws IOException {
         // TO-DO: send image to Google Cloud Vision to process
+        List<Map<String, String>> results = new ArrayList<>();
         List<AnnotateImageRequest> requests = new ArrayList<>();
-        ByteString imgBytes = ByteString.readFrom(new FileInputStream(filePath));
+        String fixedUrl = filePath.replace("\\", "/");
+        InputStream input = new URL(fixedUrl).openStream();
+
+        ByteString imgBytes = ByteString.readFrom(input);
 
         Image img = Image.newBuilder().setContent(imgBytes).build();
         Feature feat = Feature.newBuilder().setType(Feature.Type.FACE_DETECTION).build();
@@ -109,19 +118,20 @@ public class Helper {
             for (AnnotateImageResponse res : responses) {
                 if (res.hasError()) {
                     System.out.format("Error: %s%n", res.getError().getMessage());
-                    return;
+                    continue;
                 }
 
                 // For full list of available annotations, see http://g.co/cloud/vision/docs
                 for (FaceAnnotation annotation : res.getFaceAnnotationsList()) {
-                    System.out.format(
-                            "anger: %s%njoy: %s%nsurprise: %s%nposition: %s",
-                            annotation.getAngerLikelihood(),
-                            annotation.getJoyLikelihood(),
-                            annotation.getSurpriseLikelihood(),
-                            annotation.getBoundingPoly());
+                    Map<String, String> faceData = new HashMap<>();
+                    faceData.put("anger", annotation.getAngerLikelihood().name());
+                    faceData.put("joy", annotation.getJoyLikelihood().name());
+                    faceData.put("surprise", annotation.getSurpriseLikelihood().name());
+                    faceData.put("boundingPoly", annotation.getBoundingPoly().toString());
+                    results.add(faceData);
                 }
             }
         }
+        return results;
     }
 }

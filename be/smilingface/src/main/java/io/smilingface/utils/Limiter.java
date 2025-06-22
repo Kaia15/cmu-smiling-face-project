@@ -2,6 +2,9 @@ package io.smilingface.utils;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Limiter implements  ILimiter{
     /* 
     Good choice for concurrency limiter since CPU uses special instructions such as CAS (`compareAndSet()`)
