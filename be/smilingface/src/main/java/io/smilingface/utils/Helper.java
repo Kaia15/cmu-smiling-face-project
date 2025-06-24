@@ -98,6 +98,8 @@ public class Helper {
         List<Map<String, String>> results = new ArrayList<>();
         List<AnnotateImageRequest> requests = new ArrayList<>();
         String fixedUrl = filePath.replace("\\", "/");
+        System.out.println(fixedUrl);
+        
         InputStream input = new URL(fixedUrl).openStream();
 
         ByteString imgBytes = ByteString.readFrom(input);
@@ -121,15 +123,19 @@ public class Helper {
                     continue;
                 }
 
+                Map<String, String> faceData = new HashMap<>();
+                faceData.put("image", fixedUrl);
                 // For full list of available annotations, see http://g.co/cloud/vision/docs
                 for (FaceAnnotation annotation : res.getFaceAnnotationsList()) {
-                    Map<String, String> faceData = new HashMap<>();
+                    
+                    
                     faceData.put("anger", annotation.getAngerLikelihood().name());
                     faceData.put("joy", annotation.getJoyLikelihood().name());
                     faceData.put("surprise", annotation.getSurpriseLikelihood().name());
                     faceData.put("boundingPoly", annotation.getBoundingPoly().toString());
                     results.add(faceData);
                 }
+                
             }
         }
         return results;
