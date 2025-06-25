@@ -8,9 +8,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import org.springframework.stereotype.Component;
 
@@ -31,63 +34,122 @@ import com.google.protobuf.ByteString;
 public class Helper {
 
     public final String baseWikiUrl = "";
+    public final int MAX_RETRIES = 3;
+    private static final List<String> ALLOWED_IMAGE_SUFFIXES = Arrays.asList("jpeg", "jpg", "png", "webp");
+
+    //TO-DO: implement retry mechanism
+    public <T> T retry(Callable<T> task) {
+        int times = 0;
+        while (times < MAX_RETRIES) {
+            try {
+                return task.call();
+            } catch (Exception e) {
+                times ++;
+                if (times >= MAX_RETRIES) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException("Interrupted during retry wait", ie);
+                }
+            }
+        }
+        throw new IllegalStateException("This code should never be reached.");
+    }
 
     private JsonObject readJsonFromUrl(String urlString) throws IOException {
-        URL url = new URL(urlString);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
+        return retry(() -> {
+            URL url = new URL(urlString);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setConnectTimeout(2000);
+            conn.setReadTimeout(3000);
 
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
-            StringBuilder response = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
+            try (InputStream input = conn.getInputStream();
+                 BufferedReader reader = new BufferedReader(new InputStreamReader(input))) {
+
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+
+                return JsonParser.parseString(response.toString()).getAsJsonObject();
             }
-            return JsonParser.parseString(response.toString()).getAsJsonObject();
-        }
+        });
     }
 
     public List<String> fetchImage(String topic) {
         List<String> imageUrls = new ArrayList<>();
+        String articleTitle = null;
+
         try {
-            // Step 1: Get images from the Wikipedia topic page
+            // Step 1: Search for the Wikipedia article related to the topic
             String encodedTopic = URLEncoder.encode(topic, "UTF-8");
-            String apiUrl = "https://en.wikipedia.org/w/api.php?action=query&titles=" + encodedTopic
-                    + "&prop=images&format=json&imlimit=20";
+            String searchApiUrl = "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + encodedTopic + "&format=json";
 
-            JsonObject json = readJsonFromUrl(apiUrl);
-            JsonObject pages = json.getAsJsonObject("query").getAsJsonObject("pages");
+            JsonObject searchJson = readJsonFromUrl(searchApiUrl);
+            JsonArray searchResults = searchJson.getAsJsonObject("query").getAsJsonArray("search");
 
-            for (String key : pages.keySet()) {
-                JsonArray images = pages.getAsJsonObject(key).getAsJsonArray("images");
-                if (images == null) {
-                    continue;
-                }
+            if (searchResults.size() > 0) {
+                // Get the title of the first search result (most relevant)
+                articleTitle = searchResults.get(0).getAsJsonObject().get("title").getAsString();
+            } 
 
-                for (JsonElement imageElement : images) {
-                    String imageTitle = imageElement.getAsJsonObject().get("title").getAsString();
-                    if (!imageTitle.toLowerCase().endsWith(".jpg") && !imageTitle.toLowerCase().endsWith(".jpeg")) {
-                        continue; // Only get JPEG images
-                    }
+            // Step 2: Get image filenames from the identified Wikipedia article
+            String imagesApiUrl = "https://en.wikipedia.org/w/api.php?action=query&titles=" + URLEncoder.encode(articleTitle, "UTF-8")
+                                + "&prop=images&format=json";
 
-                    // Step 2: Get actual image URL
-                    String imageInfoUrl = "https://en.wikipedia.org/w/api.php?action=query&titles="
-                            + URLEncoder.encode(imageTitle, "UTF-8")
-                            + "&prop=imageinfo&iiprop=url&format=json";
+            JsonObject imagesJson = readJsonFromUrl(imagesApiUrl);
+            JsonObject pages = imagesJson.getAsJsonObject("query").getAsJsonObject("pages");
 
-                    JsonObject imageInfoJson = readJsonFromUrl(imageInfoUrl);
-                    JsonObject imagePages = imageInfoJson.getAsJsonObject("query").getAsJsonObject("pages");
+            for (Map.Entry<String, JsonElement> entry : pages.entrySet()) {
+                JsonObject page = entry.getValue().getAsJsonObject();
+                JsonArray images = page.getAsJsonArray("images"); // This array holds image filenames
 
-                    for (String imageKey : imagePages.keySet()) {
-                        JsonArray imageinfo = imagePages.getAsJsonObject(imageKey).getAsJsonArray("imageinfo");
-                        if (imageinfo != null && imageinfo.size() > 0) {
-                            String imageUrl = imageinfo.get(0).getAsJsonObject().get("url").getAsString();
-                            imageUrls.add(imageUrl);
+                if (images != null) {
+                    for (JsonElement imageElement : images) {
+                        String imageTitle = imageElement.getAsJsonObject().get("title").getAsString();
+                        // Image titles are like "File:Example.jpg"
+                        // System.out.println("Found image filename: " + imageTitle);
+
+                        // Step 3: Get image info (URL) from Wikimedia Commons
+                        // Ensure to use commons.wikimedia.org for imageinfo to get the direct URL
+                        String imageInfoUrl = "https://commons.wikimedia.org/w/api.php?action=query&titles="
+                                            + URLEncoder.encode(imageTitle, "UTF-8")
+                                            + "&prop=imageinfo&iiprop=url&format=json";
+
+                        // System.out.println("Fetching image info from Commons: " + imageInfoUrl);
+                        JsonObject imageInfoJson = readJsonFromUrl(imageInfoUrl);
+                        JsonObject imagePages = imageInfoJson.getAsJsonObject("query").getAsJsonObject("pages");
+
+                        for (Map.Entry<String, JsonElement> imagePageEntry : imagePages.entrySet()) {
+                            JsonObject imagePage = imagePageEntry.getValue().getAsJsonObject();
+                            JsonArray imageinfo = imagePage.getAsJsonArray("imageinfo");
+
+                            if (imageinfo != null && imageinfo.size() > 0) {
+                                String imageUrl = imageinfo.get(0).getAsJsonObject().get("url").getAsString();
+
+                                String fileExtension = "";
+                                int dotIndex = imageUrl.lastIndexOf('.');
+                                if (dotIndex > 0 && dotIndex < imageUrl.length() - 1) {
+                                    fileExtension = imageUrl.substring(dotIndex + 1).toLowerCase(Locale.ROOT);
+                                }
+
+                                if (ALLOWED_IMAGE_SUFFIXES.contains(fileExtension)) {
+                                    imageUrls.add(imageUrl);
+                                    
+                                } 
+                            }
                         }
                     }
                 }
             }
+
         } catch (Exception e) {
+            // System.err.println("Error fetching images: " + e.getMessage());
             e.printStackTrace();
         }
         return imageUrls;
@@ -110,9 +172,6 @@ public class Helper {
                 = AnnotateImageRequest.newBuilder().addFeatures(feat).setImage(img).build();
         requests.add(request);
 
-        // Initialize client that will be used to send requests. This client only needs to be created
-        // once, and can be reused for multiple requests. After completing all of your requests, call
-        // the "close" method on the client to safely clean up any remaining background resources.
         try (ImageAnnotatorClient client = ImageAnnotatorClient.create()) {
             BatchAnnotateImagesResponse response = client.batchAnnotateImages(requests);
             List<AnnotateImageResponse> responses = response.getResponsesList();

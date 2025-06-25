@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input"
 export function InputWithButton() {
   return (
     <div className="flex w-full max-w-sm items-center gap-2">
-      <Input type="text" placeholder="\Search" />
+      <Input type="text" placeholder="Search Topic" />
       <Button type="submit" variant="outline">
         Submit
       </Button>

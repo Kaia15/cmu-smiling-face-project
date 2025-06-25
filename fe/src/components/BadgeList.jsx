@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge"
 
 export function BadgeDemo() {
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex flex-col items-center gap-2 my-4">
       <div className="flex w-full flex-wrap gap-2">
         <div className="scroll-m-20 text-base font-semibold tracking-tight">
             Common Topics
