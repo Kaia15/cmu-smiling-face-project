@@ -1,4 +1,4 @@
-# Concurrency
+# Facemini
 
 In this project, you will work with concurrency in a Java/Spring Boot backend and will modify a React frontend. You will get experience with writing asynchronous code, with error handling, and with handling state in React.
 
