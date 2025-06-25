@@ -1,13 +1,9 @@
-import { BadgeDemo } from "@/components/BadgeList";
-import { InputWithButton } from "@/components/InputWithButton";
-import { TypographyH2 } from "@/components/Typographyh2";
+import DisplayPage from "@/components/DisplayPage";
+import SearchPage from "@/components/SearchPage";
 
 export default function Home() {
   return (
-    <div className="flex flex-col justify-center h-screen items-center">
-      <TypographyH2 />
-      <InputWithButton />
-      <BadgeDemo />
-    </div>
+    // <SearchPage />
+    <DisplayPage />
   );
 }
