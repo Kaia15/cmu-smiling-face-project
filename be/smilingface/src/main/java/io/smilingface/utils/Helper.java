@@ -37,7 +37,8 @@ public class Helper {
     public final int MAX_RETRIES = 3;
     private static final List<String> ALLOWED_IMAGE_SUFFIXES = Arrays.asList("jpeg", "jpg", "png", "webp");
 
-    //TO-DO: implement retry mechanism
+    /* Implement retry mechanism to re-connect Wikipedia & GCP in 2 attempts
+    */
     public <T> T retry(Callable<T> task) {
         int times = 0;
         while (times < MAX_RETRIES) {
@@ -49,6 +50,7 @@ public class Helper {
                     throw new RuntimeException(e);
                 }
                 try {
+                    // Do the after-retry following before-retry in the duration of 1000(ms)
                     Thread.sleep(1000);
                 } catch (InterruptedException ie) {
                     Thread.currentThread().interrupt();
@@ -86,7 +88,7 @@ public class Helper {
         String articleTitle = null;
 
         try {
-            // Step 1: Search for the Wikipedia article related to the topic
+            // Search for the Wikipedia article related to the topic
             String encodedTopic = URLEncoder.encode(topic, "UTF-8");
             String searchApiUrl = "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + encodedTopic + "&format=json";
 
@@ -98,7 +100,7 @@ public class Helper {
                 articleTitle = searchResults.get(0).getAsJsonObject().get("title").getAsString();
             } 
 
-            // Step 2: Get image filenames from the identified Wikipedia article
+            // Get image filenames from the identified Wikipedia article
             String imagesApiUrl = "https://en.wikipedia.org/w/api.php?action=query&titles=" + URLEncoder.encode(articleTitle, "UTF-8")
                                 + "&prop=images&format=json";
 
@@ -112,16 +114,13 @@ public class Helper {
                 if (images != null) {
                     for (JsonElement imageElement : images) {
                         String imageTitle = imageElement.getAsJsonObject().get("title").getAsString();
-                        // Image titles are like "File:Example.jpg"
-                        // System.out.println("Found image filename: " + imageTitle);
-
-                        // Step 3: Get image info (URL) from Wikimedia Commons
+                    
+                        // Get image info (URL) from Wikimedia Commons
                         // Ensure to use commons.wikimedia.org for imageinfo to get the direct URL
                         String imageInfoUrl = "https://commons.wikimedia.org/w/api.php?action=query&titles="
                                             + URLEncoder.encode(imageTitle, "UTF-8")
                                             + "&prop=imageinfo&iiprop=url&format=json";
 
-                        // System.out.println("Fetching image info from Commons: " + imageInfoUrl);
                         JsonObject imageInfoJson = readJsonFromUrl(imageInfoUrl);
                         JsonObject imagePages = imageInfoJson.getAsJsonObject("query").getAsJsonObject("pages");
 
@@ -149,7 +148,6 @@ public class Helper {
             }
 
         } catch (Exception e) {
-            // System.err.println("Error fetching images: " + e.getMessage());
             e.printStackTrace();
         }
         return imageUrls;
