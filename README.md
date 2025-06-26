@@ -4,6 +4,8 @@ In this project, you will work with concurrency in a Java/Spring Boot backend an
 
 ![image](https://github.com/user-attachments/assets/502cded9-6485-4eb3-8a21-cd53167aaf10)
 
+![image](https://github.com/user-attachments/assets/73d6d883-b799-43af-bb82-fa306b5f715b)
+
 ## Introduction
 
 You will work on a semi-completed program *SmilingFaces* to analyze faces in Wikipedia pages -- for example are more people smiling in pictures of the Carnegie Mellon wikipedia page or in the University of Pittsburgh wikipedia page? In the web application, you can enter a *topic* for which a Wikipedia page exists and the program will identify all images in the page and determine with an ML model whether the picture contains smiling faces. It can also collect the pictures from other Wikipedia pages linked heavily from the target page ("include top neighbor topics").
