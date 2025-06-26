@@ -1,20 +1,67 @@
+"use client"
+
+import { useImage } from "@/hooks/useImage";
 import { InputWithButton } from "./InputWithButton";
 import { TypographyH2 } from "./Typographyh2";
 import { Separator } from "@/components/ui/separator";
+import BoundingPolyViewer from "./BoundingPoly";
 
-export default function DisplayPage() {
+export default function DisplayPage({imageState}) {
+    const { images, topic, setTopic, loading, handleSubmit, error } = imageState;
+    console.log(images);
+
     return (
         <div>
             <div className="flex flex-row">
-                <TypographyH2 />
-                <InputWithButton />
+                <div className="flex-1/5">
+                    <TypographyH2 />
+                </div>
+                <div className="flex-4/5">
+                    <InputWithButton 
+                    topic={topic} 
+                    setTopic={setTopic}
+                    loading={loading}
+                    handleSubmit={handleSubmit}
+                    />
+                </div>
             </div>
-            <Separator className="my-4"/>
-            <p className="text-muted-foreground text-xl mx-2">
-            AI Overview
-            </p>
-            <img className="h-48 w-96 object-fill rounded-lg my-4 mx-2" src="https://i.pinimg.com/736x/33/4d/fb/334dfbec7aca0a73b1ed5a033be306b9.jpg" alt="image description" />
+            
+            <Separator className="my-2"/>
+            <div className="flex flex-row">
+                <div className="flex-1/5"></div>
+                <div className="flex-4/5">
+                    <p className="text-muted-foreground text-xl">
+                    AI Overview
+                    </p>
+                    <div>
+                        {images?.map((img, imageIdx) => {
+                            const {image, joy, surprise, anger, boundingPoly} = img;
 
+                            return (
+                            <div className="flex flex-row">
+                            <div className="flex-1/2 my-4 mr-2">
+                                {error ? <p style={{ color: "red" }}>{error}</p> : 
+                                <div>
+                                    <ul>
+                                        <li>Joy Index: {joy}</li>
+                                        <li>Surprise Index: {surprise}</li>
+                                        <li>Anger Index: {anger}</li>
+                                    </ul> 
+                                    
+                                </div>  
+                                } 
+                                    
+                            </div>
+                            <div className="flex-1/2">
+                                {/* <img className="rounded-lg my-4 h-1/2" src={image} alt="image description" /> */}
+                                <BoundingPolyViewer boundingPoly={boundingPoly} image={image}/>
+                            </div>
+                            </div>
+                        )})}
+                        
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }
