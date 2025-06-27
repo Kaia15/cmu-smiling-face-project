@@ -1,6 +1,6 @@
 # Facemini
 
-In this project, you will work with concurrency in a Java/Spring Boot backend and will modify a React frontend. You will get experience with writing asynchronous code, with error handling, and with handling state in React.
+Inspired by **CMU-17-214** course, in this project, you will work with concurrency in a Java/Spring Boot backend and a React frontend from scratch. You will get experience with writing asynchronous code, with error handling, and with handling state in React, and Java/Spring.
 
 ![image](https://github.com/user-attachments/assets/a2d5a92a-1bea-40bf-bf7d-561f6571da3e)
 
@@ -20,12 +20,10 @@ The code consists of two related projects: The backend *java/spring boot* implem
   * run `npm install`  in the `frontend/` directory
   * `npm run build` in `frontend/` to build the frontend, which will result in static pages in `frontend/build/`
 * Second, build and run the backend
-  * run `npm install` in the root directory
-  * `npm run compile` builds the backend, resulting in Javascript code in `dist/` as usual
   * Make sure that you are signed into the Google Cloud API using `gcloud` (same as Lab 8)
-  * `npm run start` runs the server which you can then access at `http://localhost:8080`
+  * `javac YourApplication.java` runs the server which you can then access at `http://localhost:8080`
 
-The backend serves the frontend code in the root of the web server but also provides API endpoints for starting a job (`POST /job`) and for getting results of a job (`GET /job/:id`) that both communicate in JSON format (using the [Long Running Operation with Polling Pattern](http://restalk-patterns.org/long-running-operation-polling.html)). The frontend will make requests to the APIs to update the state within the page. If a job is not completed on the first request, it will check every second for updates.
+The backend serves the frontend code in the root of the web server but also provides API endpoints for starting a task (`POST ?topic=${your_search_topic}`) both communicate in JSON format (using the [Long Running Operation with Polling Pattern](http://restalk-patterns.org/long-running-operation-polling.html) /*still on research*) . The frontend will make requests to the APIs to update the state within the page. If a job is not completed on the first request, it will check every second for updates.
 
 In the user interface in the web browser you can enter a topic and start the analysis. Note that the response will take a very long time if you analyze any nontrivial pages. Analyzing the topic "Carnegie Mellon University" gathers and analyzes 30 images without neighboring pages (and many more with neighbors), which easily takes 30 seconds to respond. A good test page might be "David Tepper" which has only a single image and takes about 2 seconds to analyze.
 
@@ -34,7 +32,7 @@ In the user interface in the web browser you can enter a topic and start the ana
 **Concurrency in the backend.** Rewrite the backend to perform computations concurrently. We have the following requirements of the final implementation:
 
 * The server makes requests to Wikipedia and the Google Cloud API concurrently, speeding up responses significantly.
-* The server can answer multiple requests concurrently (i.e., multiple calls to `/job` and `/job/:id`).
+* The server can answer multiple requests concurrently (i.e., multiple calls to `POST ?topic=${search_param}`).
 * The server reports an error when more than 5 jobs are processed concurrently asking users to try again later. Reject additional requests with HTTP error code 503.
 * The server never makes more than 5 concurrent requests to Wikipedia and never more than 5 concurrent requests to the Google Cloud API in order to not overload those servers (this limit is shared by all jobs).
 * If multiple topics are analyzed, the server does not wait until all images are collected from all topics, but starts analyzing images as soon as the images from each topic are identified.
@@ -51,7 +49,7 @@ In the user interface in the web browser you can enter a topic and start the ana
 * Show a progress bar while data is loaded.
 * Show errors from the backend in the frontend, ideally with meaningful error messages.
 
-**What not to change:** We plan to automate some testing of your code and ask you to NOT change the `Connections` interface and the signature of the `smilingFacesBackend` function. Also do not change the protocol between the backend and frontend (i.e., do not change the API endpoint addresses and the interfaces in `jobdata.ts`). Make all external calls through the APIs in `Connections` and do not make web calls with any other API. You may, and probably should, develop your own abstractions on top of the functions in `Connections`.
+**What not to change:** We plan to automate some testing of your code and ask you to NOT change the `Connections` interface and the signature of the `smilingFacesBackend` function. Make all external calls through the APIs in `Connections` and do not make web calls with any other API. You may, and probably should, develop your own abstractions on top of the functions in `Connections`.
 
 ## Submitting your work
 

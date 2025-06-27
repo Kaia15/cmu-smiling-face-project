@@ -12,7 +12,7 @@ export function InputWithButton({topic, setTopic, loading, handleSubmit}) {
       onClick={handleSubmit} 
       disabled={loading} 
       variant="outline">
-        Submit
+        Search
       </Button>
     </div>
   )
