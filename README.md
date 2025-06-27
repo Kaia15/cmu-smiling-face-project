@@ -2,9 +2,9 @@
 
 In this project, you will work with concurrency in a Java/Spring Boot backend and will modify a React frontend. You will get experience with writing asynchronous code, with error handling, and with handling state in React.
 
-![image](https://github.com/user-attachments/assets/502cded9-6485-4eb3-8a21-cd53167aaf10)
+![image](https://github.com/user-attachments/assets/a2d5a92a-1bea-40bf-bf7d-561f6571da3e)
 
-![image](https://github.com/user-attachments/assets/79e5add9-1e8c-45a2-986b-e2611a1f4d09)
+![image](https://github.com/user-attachments/assets/60ccb876-b200-4f7c-ab19-ec947639158b)
 
 ![image](https://github.com/user-attachments/assets/57221a13-d439-4e98-9135-f6127ee5ea80)
 
