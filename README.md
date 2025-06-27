@@ -4,7 +4,7 @@ In this project, you will work with concurrency in a Java/Spring Boot backend an
 
 ![image](https://github.com/user-attachments/assets/502cded9-6485-4eb3-8a21-cd53167aaf10)
 
-![image](https://github.com/user-attachments/assets/73d6d883-b799-43af-bb82-fa306b5f715b)
+![image](https://github.com/user-attachments/assets/79e5add9-1e8c-45a2-986b-e2611a1f4d09)
 
 ![image](https://github.com/user-attachments/assets/57221a13-d439-4e98-9135-f6127ee5ea80)
 
