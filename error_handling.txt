@@ -1,0 +1,250 @@
+for i in {1..20}; do
+  curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper" &
+done
+wait
+[1] 551
+[2] 552
+[3] 553
+[4] 554
+[5] 555
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[6] 556
+[3]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[7] 557
+[4]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[8] 558
+[5]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[9] 559
+[6]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[10] 560
+[7]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[11] 561
+[8]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[12] 562
+[9]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[13] 563
+[10]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[14] 564
+[11]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[15] 565
+[12]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[16] 566
+[13]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[17] 567
+[14]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[18] 568
+[15]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[19] 569
+[16]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[20] 570
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[17]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+[18]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+[19]-  Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+[20]+  Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+[][{"image":"https://upload.wikimedia.org/wikipedia/commons/3/3d/David_Tepper_01.jpg","surprise":"VERY_UNLIKELY","joy":"VERY_LIKELY","anger":"VERY_UNLIKELY","boundingPoly":"vertices {\n  x: 112\n  y: 8\n}\nvertices {\n  x: 218\n  y: 8\n}\nvertices {\n  x: 218\n  y: 131\n}\nvertices {\n  x: 112\n  y: 131\n}\n"}][1]-  Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+[2]+  Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+
+alice@LAPTOP-5S5LP48V MINGW64 ~/cmu-17-214-hw5 (master)
+$ for i in {1..100}; do
+  curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper" &
+done
+wait
+[1] 585
+[2] 586
+[3] 587
+[4] 588
+[5] 589
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[6] 590
+[3]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[7] 591
+[4]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[8] 592
+[5]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[9] 593
+[6]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+[7]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+[10] 594
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[11] 595
+[8]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[12] 596
+[9]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[13] 597
+[10]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[14] 598
+[11]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[15] 599
+[12]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[16] 600
+[13]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[17] 601
+[14]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[18] 602
+[15]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+[19] 603
+[16]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[20] 604
+[17]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[21] 605
+[18]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[22] 606
+[19]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[23] 607
+[20]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+[24] 608
+[21]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[25] 609
+[22]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[26] 610
+[23]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[27] 611
+[24]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[28] 612
+[25]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[29] 613
+[26]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+[30] 614
+[27]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![31] 615
+[28]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![32] 616
+[29]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![][33] 617
+[1]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+[30]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+[34] 618
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![35] 619
+[32]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs!Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![36] 620
+[33]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+[37] 621
+[34]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![38] 622
+[35]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![39] 623
+[36]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![40] 624
+[37]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![41] 625
+[38]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![42] 626
+[39]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![43] 627
+[40]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![44] 628
+[41]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![45] 629
+[42]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![46] 630
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![47] 631
+[43]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+[44]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![48] 632
+[45]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![49] 633
+[46]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![50] 634
+[47]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![51] 635
+[48]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![52] 636
+[49]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![][53] 637
+[31]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+[50]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+[54] 638
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![55] 639
+[52]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![56] 640
+[53]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![{"image":"https://upload.wikimedia.org/wikipedia/commons/3/3d/David_Tepper_01.jpg","surprise":"VERY_UNLIKELY","joy":"VERY_LIKELY","anger":"VERY_UNLIKELY","boundingPoly":"vertices {\n  x: 112\n  y: 8\n}\nvertices {\n  x: 218\n  y: 8\n}\nvertices {\n  x: 218\n  y: 131\n}\nvertices {\n  x: 112\n  y: 131\n}\n"}][57] 641
+[2]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+[54]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+[58] 642
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[59] 643
+[56]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+[60] 644
+[57]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[61] 645
+[58]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[62] 646
+[59]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[63] 647
+[60]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[64] 648
+[61]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[65] 649
+[62]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[66] 650
+[63]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[67] 651
+[64]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[68] 652
+[65]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[69] 653
+[66]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[70] 654
+[67]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[71] 655
+[68]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[72] 656
+[69]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[73] 657
+[70]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![74] 658
+[71]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![75] 659
+[72]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![76] 660
+[73]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![77] 661
+[74]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![][78] 662
+[75]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+[79] 663
+[55]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![80] 664
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![77]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+[81] 665
+[78]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![82] 666
+[79]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![83] 667
+[80]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![84] 668
+[81]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![85] 669
+[82]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![86] 670
+[83]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![87] 671
+[84]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![88] 672
+[85]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![89] 673
+[86]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![90] 674
+[87]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![91] 675
+[88]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![92] 676
+[89]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![93] 677
+[90]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![94] 678
+[91]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![95] 679
+[92]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![96] 680
+[93]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![97] 681
+[94]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![98] 682
+[95]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![99] 683
+[96]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![100] 684
+Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs!Error during image processing: java.lang.IllegalStateException: Reached max capacity of 5 concurrent jobs![{"image":"https://upload.wikimedia.org/wikipedia/commons/3/3d/David_Tepper_01.jpg","surprise":"VERY_UNLIKELY","joy":"VERY_LIKELY","anger":"VERY_UNLIKELY","boundingPoly":"vertices {\n  x: 112\n  y: 7\n}\nvertices {\n  x: 218\n  y: 7\n}\nvertices {\n  x: 218\n  y: 131\n}\nvertices {\n  x: 112\n  y: 131\n}\n"}][51]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+[97]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+[98]   Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+[99]-  Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+[][{"image":"https://upload.wikimedia.org/wikipedia/commons/3/3d/David_Tepper_01.jpg","surprise":"VERY_UNLIKELY","joy":"VERY_LIKELY","anger":"VERY_UNLIKELY","boundingPoly":"vertices {\n  x: 112\n  y: 8\n}\nvertices {\n  x: 218\n  y: 8\n}\nvertices {\n  x: 218\n  y: 131\n}\nvertices {\n  x: 112\n  y: 131\n}\n"}][76]-  Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
+[100]+  Done                    curl -X POST "http://localhost:8080/api/v1?topic=David%20Tepper"
