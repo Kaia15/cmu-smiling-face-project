@@ -1,6 +1,6 @@
 package io.smilingface.utils;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -31,6 +31,7 @@ public class Executor implements IExecutor {
 
     public Future<List<Map<String, String>>> submit(String topic) {
         return executorSrv.submit(() -> {
+            List<Map<String, String>> finalResponse = new ArrayList<>();
             if (!this.taskLimiter.tryAcquire()) {
                 throw new IllegalStateException("Reached max capacity of 5 concurrent jobs!");
             }
@@ -43,10 +44,9 @@ public class Executor implements IExecutor {
                 try {
                     List<String> imageUrls = helper.fetchImage(topic);
                     for (String url : imageUrls) {
-                        
                         if (this.googleLimiter.tryAcquire()) {
                             try {
-                                return helper.analyzeImage(url);
+                                finalResponse.add(helper.analyzeImage(url));
                             } catch (Exception err) {
                                 err.printStackTrace();
                             } finally {
@@ -61,7 +61,7 @@ public class Executor implements IExecutor {
                 this.taskLimiter.release();
             }
 
-            return Collections.emptyList();
+            return finalResponse;
         });
     }
 

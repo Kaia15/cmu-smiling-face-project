@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
@@ -38,14 +37,14 @@ public class Helper {
     private static final List<String> ALLOWED_IMAGE_SUFFIXES = Arrays.asList("jpeg", "jpg", "png", "webp");
 
     /* Implement retry mechanism to re-connect Wikipedia & GCP in 2 attempts
-    */
+     */
     public <T> T retry(Callable<T> task) {
         int times = 0;
         while (times < MAX_RETRIES) {
             try {
                 return task.call();
             } catch (Exception e) {
-                times ++;
+                times++;
                 if (times >= MAX_RETRIES) {
                     throw new RuntimeException(e);
                 }
@@ -69,8 +68,7 @@ public class Helper {
             conn.setConnectTimeout(2000);
             conn.setReadTimeout(3000);
 
-            try (InputStream input = conn.getInputStream();
-                 BufferedReader reader = new BufferedReader(new InputStreamReader(input))) {
+            try (InputStream input = conn.getInputStream(); BufferedReader reader = new BufferedReader(new InputStreamReader(input))) {
 
                 StringBuilder response = new StringBuilder();
                 String line;
@@ -83,118 +81,160 @@ public class Helper {
         });
     }
 
+    // public List<String> fetchImage(String topic) {
+    //     List<String> imageUrls = new ArrayList<>();
+    //     String articleTitle = null;
+    //     try {
+    //         // Search for the Wikipedia article related to the topic
+    //         String encodedTopic = URLEncoder.encode(topic, "UTF-8");
+    //         String searchApiUrl = "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + encodedTopic + "&format=json";
+    //         JsonObject searchJson = readJsonFromUrl(searchApiUrl);
+    //         JsonArray searchResults = searchJson.getAsJsonObject("query").getAsJsonArray("search");
+    //         if (searchResults.size() > 0) {
+    //             // Get the title of the first search result (most relevant)
+    //             articleTitle = searchResults.get(0).getAsJsonObject().get("title").getAsString();
+    //         } 
+    //         // Get image filenames from the identified Wikipedia article
+    //         String imagesApiUrl = "https://en.wikipedia.org/wiki" + URLEncoder.encode(articleTitle, "UTF-8")
+    //                             + "&prop=images&format=json";
+    //         JsonObject imagesJson = readJsonFromUrl(imagesApiUrl);
+    //         JsonObject pages = imagesJson.getAsJsonObject("query").getAsJsonObject("pages");
+    //         for (Map.Entry<String, JsonElement> entry : pages.entrySet()) {
+    //             JsonObject page = entry.getValue().getAsJsonObject();
+    //             JsonArray images = page.getAsJsonArray("images"); // This array holds image filenames
+    //             if (images != null) {
+    //                 for (JsonElement imageElement : images) {
+    //                     String imageTitle = imageElement.getAsJsonObject().get("title").getAsString();
+    //                     // Get image info (URL) from Wikimedia Commons
+    //                     // Ensure to use commons.wikimedia.org for imageinfo to get the direct URL
+    //                     String imageInfoUrl = "https://commons.wikimedia.org/w/api.php?action=query&titles="
+    //                                         + URLEncoder.encode(imageTitle, "UTF-8")
+    //                                         + "&prop=imageinfo&iiprop=url&format=json";
+    //                     JsonObject imageInfoJson = readJsonFromUrl(imageInfoUrl);
+    //                     JsonObject imagePages = imageInfoJson.getAsJsonObject("query").getAsJsonObject("pages");
+    //                     for (Map.Entry<String, JsonElement> imagePageEntry : imagePages.entrySet()) {
+    //                         JsonObject imagePage = imagePageEntry.getValue().getAsJsonObject();
+    //                         JsonArray imageinfo = imagePage.getAsJsonArray("imageinfo");
+    //                         if (imageinfo != null && imageinfo.size() > 0) {
+    //                             String imageUrl = imageinfo.get(0).getAsJsonObject().get("url").getAsString();
+    //                             String fileExtension = "";
+    //                             int dotIndex = imageUrl.lastIndexOf('.');
+    //                             if (dotIndex > 0 && dotIndex < imageUrl.length() - 1) {
+    //                                 fileExtension = imageUrl.substring(dotIndex + 1).toLowerCase(Locale.ROOT);
+    //                             }
+    //                             if (ALLOWED_IMAGE_SUFFIXES.contains(fileExtension)) {
+    //                                 imageUrls.add(imageUrl);
+    //                             } 
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //     }
+    //     return imageUrls;
+    // }
     public List<String> fetchImage(String topic) {
         List<String> imageUrls = new ArrayList<>();
-        String articleTitle = null;
 
         try {
-            // Search for the Wikipedia article related to the topic
-            String encodedTopic = URLEncoder.encode(topic, "UTF-8");
-            String searchApiUrl = "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + encodedTopic + "&format=json";
+            int offset = 0;
+            boolean hasMore = true;
 
-            JsonObject searchJson = readJsonFromUrl(searchApiUrl);
-            JsonArray searchResults = searchJson.getAsJsonObject("query").getAsJsonArray("search");
+            while (hasMore && imageUrls.size() < 100) { 
+                String encodedTopic = URLEncoder.encode(topic, "UTF-8");
 
-            if (searchResults.size() > 0) {
-                // Get the title of the first search result (most relevant)
-                articleTitle = searchResults.get(0).getAsJsonObject().get("title").getAsString();
-            } 
+                String apiUrl = String.format(
+                    "https://commons.wikimedia.org/w/api.php?action=query&format=json" +
+                    "&generator=search&gsrnamespace=6&gsrlimit=50" +
+                    "&gsroffset=%d&gsrsearch=%s&prop=imageinfo&iiprop=url",
+                    offset, encodedTopic
+                );
 
-            // Get image filenames from the identified Wikipedia article
-            String imagesApiUrl = "https://en.wikipedia.org/w/api.php?action=query&titles=" + URLEncoder.encode(articleTitle, "UTF-8")
-                                + "&prop=images&format=json";
+                JsonObject json = readJsonFromUrl(apiUrl);
+                JsonObject query = json.getAsJsonObject("query");
 
-            JsonObject imagesJson = readJsonFromUrl(imagesApiUrl);
-            JsonObject pages = imagesJson.getAsJsonObject("query").getAsJsonObject("pages");
+                if (query != null && query.has("pages")) {
+                    JsonObject pages = query.getAsJsonObject("pages");
 
-            for (Map.Entry<String, JsonElement> entry : pages.entrySet()) {
-                JsonObject page = entry.getValue().getAsJsonObject();
-                JsonArray images = page.getAsJsonArray("images"); // This array holds image filenames
+                    for (Map.Entry<String, JsonElement> entry : pages.entrySet()) {
+                        JsonObject page = entry.getValue().getAsJsonObject();
 
-                if (images != null) {
-                    for (JsonElement imageElement : images) {
-                        String imageTitle = imageElement.getAsJsonObject().get("title").getAsString();
-                    
-                        // Get image info (URL) from Wikimedia Commons
-                        // Ensure to use commons.wikimedia.org for imageinfo to get the direct URL
-                        String imageInfoUrl = "https://commons.wikimedia.org/w/api.php?action=query&titles="
-                                            + URLEncoder.encode(imageTitle, "UTF-8")
-                                            + "&prop=imageinfo&iiprop=url&format=json";
-
-                        JsonObject imageInfoJson = readJsonFromUrl(imageInfoUrl);
-                        JsonObject imagePages = imageInfoJson.getAsJsonObject("query").getAsJsonObject("pages");
-
-                        for (Map.Entry<String, JsonElement> imagePageEntry : imagePages.entrySet()) {
-                            JsonObject imagePage = imagePageEntry.getValue().getAsJsonObject();
-                            JsonArray imageinfo = imagePage.getAsJsonArray("imageinfo");
+                        if (page.has("imageinfo")) {
+                            JsonArray imageinfo = page.getAsJsonArray("imageinfo");
 
                             if (imageinfo != null && imageinfo.size() > 0) {
                                 String imageUrl = imageinfo.get(0).getAsJsonObject().get("url").getAsString();
-
-                                String fileExtension = "";
-                                int dotIndex = imageUrl.lastIndexOf('.');
-                                if (dotIndex > 0 && dotIndex < imageUrl.length() - 1) {
-                                    fileExtension = imageUrl.substring(dotIndex + 1).toLowerCase(Locale.ROOT);
-                                }
-
-                                if (ALLOWED_IMAGE_SUFFIXES.contains(fileExtension)) {
-                                    imageUrls.add(imageUrl);
-                                    
-                                } 
+                                //System.out.println(imageUrl);
+                                imageUrls.add(imageUrl);
                             }
                         }
                     }
+                }
+
+                if (json.has("continue") && json.getAsJsonObject("continue").has("gsroffset")) {
+                    offset = json.getAsJsonObject("continue").get("gsroffset").getAsInt();
+                } else {
+                    hasMore = false;
                 }
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return imageUrls;
     }
 
-    public List<Map<String, String>> analyzeImage(String filePath) throws IOException {
-        // TO-DO: send image to Google Cloud Vision to process
-        List<Map<String, String>> results = new ArrayList<>();
-        List<AnnotateImageRequest> requests = new ArrayList<>();
-        String fixedUrl = filePath.replace("\\", "/");
-        System.out.println(fixedUrl);
-        
-        InputStream input = new URL(fixedUrl).openStream();
+    public Map<String, String> analyzeImage(String filePath) throws IOException {
+    Map<String, String> faceData = new HashMap<>();
+    List<AnnotateImageRequest> requests = new ArrayList<>();
+    
+    String fixedUrl = filePath.replace("\\", "/");
+    InputStream input = new URL(fixedUrl).openStream();
+    ByteString imgBytes = ByteString.readFrom(input);
 
-        ByteString imgBytes = ByteString.readFrom(input);
+    if (imgBytes.size() > 20_000_000) { 
+        System.out.println("Error: Image size exceeds 20MB limit.");
+        faceData.put("error", "Image size exceeds 20MB limit.");
+        return faceData;
+    }
 
-        Image img = Image.newBuilder().setContent(imgBytes).build();
-        Feature feat = Feature.newBuilder().setType(Feature.Type.FACE_DETECTION).build();
-        AnnotateImageRequest request
-                = AnnotateImageRequest.newBuilder().addFeatures(feat).setImage(img).build();
-        requests.add(request);
+    Image img = Image.newBuilder().setContent(imgBytes).build();
+    Feature feat = Feature.newBuilder().setType(Feature.Type.FACE_DETECTION).build();
+    AnnotateImageRequest request = AnnotateImageRequest.newBuilder()
+            .addFeatures(feat)
+            .setImage(img)
+            .build();
+    requests.add(request);
 
-        try (ImageAnnotatorClient client = ImageAnnotatorClient.create()) {
-            BatchAnnotateImagesResponse response = client.batchAnnotateImages(requests);
-            List<AnnotateImageResponse> responses = response.getResponsesList();
+    try (ImageAnnotatorClient client = ImageAnnotatorClient.create()) {
+        BatchAnnotateImagesResponse response = client.batchAnnotateImages(requests);
+        List<AnnotateImageResponse> responses = response.getResponsesList();
 
-            for (AnnotateImageResponse res : responses) {
-                if (res.hasError()) {
-                    System.out.format("Error: %s%n", res.getError().getMessage());
-                    continue;
-                }
+        for (AnnotateImageResponse res : responses) {
+            if (res.hasError()) {
+                System.out.format("Error: %s%n", res.getError().getMessage());
+                faceData.put("error", res.getError().getMessage());
+                return faceData;
+            }
 
-                Map<String, String> faceData = new HashMap<>();
+            if (!res.getFaceAnnotationsList().isEmpty()) {
+                FaceAnnotation annotation = res.getFaceAnnotationsList().get(0);
+
                 faceData.put("image", fixedUrl);
-                // For full list of available annotations, see http://g.co/cloud/vision/docs
-                for (FaceAnnotation annotation : res.getFaceAnnotationsList()) {
-                    
-                    
-                    faceData.put("anger", annotation.getAngerLikelihood().name());
-                    faceData.put("joy", annotation.getJoyLikelihood().name());
-                    faceData.put("surprise", annotation.getSurpriseLikelihood().name());
-                    faceData.put("boundingPoly", annotation.getBoundingPoly().toString());
-                    results.add(faceData);
-                }
-                
+                faceData.put("anger", annotation.getAngerLikelihood().name());
+                faceData.put("joy", annotation.getJoyLikelihood().name());
+                faceData.put("surprise", annotation.getSurpriseLikelihood().name());
+                faceData.put("boundingPoly", annotation.getBoundingPoly().toString());
+            } else {
+                faceData.put("image", fixedUrl);
+                faceData.put("note", "No face detected.");
             }
         }
-        return results;
     }
+
+    return faceData;
+}
 }

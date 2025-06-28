@@ -36,7 +36,24 @@ export default function DisplayPage({ imageState }) {
                     </p>
                     <div>
                         {images?.map((img, imageIdx) => {
-                            const { image, joy, surprise, anger, boundingPoly } = img;
+                            const { image, joy, surprise, anger, boundingPoly, note, error } = img;
+                            if (note || error) return (
+                                <div>
+                                    <p> {note} </p>
+                                    <img
+                                        src={image}
+                                        alt="Analyzed"
+                                        className="block max-w-full h-auto"
+                                    />
+                                </div>
+                            )
+                            // return (
+                            //     <img
+                            //             src={image}
+                            //             alt="Analyzed"
+                            //             className="block max-w-full h-auto"
+                            //     />
+                            // )
 
                             // Helper function to convert likelihood to confidence percentage
                             const getConfidenceFromLikelihood = (likelihood) => {
