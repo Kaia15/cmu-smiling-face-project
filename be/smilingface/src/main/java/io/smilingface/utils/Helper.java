@@ -81,60 +81,7 @@ public class Helper {
         });
     }
 
-    // public List<String> fetchImage(String topic) {
-    //     List<String> imageUrls = new ArrayList<>();
-    //     String articleTitle = null;
-    //     try {
-    //         // Search for the Wikipedia article related to the topic
-    //         String encodedTopic = URLEncoder.encode(topic, "UTF-8");
-    //         String searchApiUrl = "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + encodedTopic + "&format=json";
-    //         JsonObject searchJson = readJsonFromUrl(searchApiUrl);
-    //         JsonArray searchResults = searchJson.getAsJsonObject("query").getAsJsonArray("search");
-    //         if (searchResults.size() > 0) {
-    //             // Get the title of the first search result (most relevant)
-    //             articleTitle = searchResults.get(0).getAsJsonObject().get("title").getAsString();
-    //         } 
-    //         // Get image filenames from the identified Wikipedia article
-    //         String imagesApiUrl = "https://en.wikipedia.org/wiki" + URLEncoder.encode(articleTitle, "UTF-8")
-    //                             + "&prop=images&format=json";
-    //         JsonObject imagesJson = readJsonFromUrl(imagesApiUrl);
-    //         JsonObject pages = imagesJson.getAsJsonObject("query").getAsJsonObject("pages");
-    //         for (Map.Entry<String, JsonElement> entry : pages.entrySet()) {
-    //             JsonObject page = entry.getValue().getAsJsonObject();
-    //             JsonArray images = page.getAsJsonArray("images"); // This array holds image filenames
-    //             if (images != null) {
-    //                 for (JsonElement imageElement : images) {
-    //                     String imageTitle = imageElement.getAsJsonObject().get("title").getAsString();
-    //                     // Get image info (URL) from Wikimedia Commons
-    //                     // Ensure to use commons.wikimedia.org for imageinfo to get the direct URL
-    //                     String imageInfoUrl = "https://commons.wikimedia.org/w/api.php?action=query&titles="
-    //                                         + URLEncoder.encode(imageTitle, "UTF-8")
-    //                                         + "&prop=imageinfo&iiprop=url&format=json";
-    //                     JsonObject imageInfoJson = readJsonFromUrl(imageInfoUrl);
-    //                     JsonObject imagePages = imageInfoJson.getAsJsonObject("query").getAsJsonObject("pages");
-    //                     for (Map.Entry<String, JsonElement> imagePageEntry : imagePages.entrySet()) {
-    //                         JsonObject imagePage = imagePageEntry.getValue().getAsJsonObject();
-    //                         JsonArray imageinfo = imagePage.getAsJsonArray("imageinfo");
-    //                         if (imageinfo != null && imageinfo.size() > 0) {
-    //                             String imageUrl = imageinfo.get(0).getAsJsonObject().get("url").getAsString();
-    //                             String fileExtension = "";
-    //                             int dotIndex = imageUrl.lastIndexOf('.');
-    //                             if (dotIndex > 0 && dotIndex < imageUrl.length() - 1) {
-    //                                 fileExtension = imageUrl.substring(dotIndex + 1).toLowerCase(Locale.ROOT);
-    //                             }
-    //                             if (ALLOWED_IMAGE_SUFFIXES.contains(fileExtension)) {
-    //                                 imageUrls.add(imageUrl);
-    //                             } 
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
-    //     return imageUrls;
-    // }
+
     public List<String> fetchImage(String topic) {
         List<String> imageUrls = new ArrayList<>();
 
