@@ -4,7 +4,7 @@ Inspired by **CMU-17-214** course, in this project, you will work with concurren
 
 ![image](https://github.com/user-attachments/assets/a2d5a92a-1bea-40bf-bf7d-561f6571da3e)
 
-![image](https://github.com/user-attachments/assets/60ccb876-b200-4f7c-ab19-ec947639158b)
+![image](https://github.com/user-attachments/assets/30cef663-3e24-41ee-a7c4-7c5d61c6e835)
 
 ![image](https://github.com/user-attachments/assets/57221a13-d439-4e98-9135-f6127ee5ea80)
 
