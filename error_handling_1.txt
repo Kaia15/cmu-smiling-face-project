@@ -8,7 +8,8 @@ wait
 [4] 2549
 [5] 2550
 [6] 2551
-Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.[1]   Done                    curl -X POST -d "topic=smile" http://localhost:8080/api/v1
+Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.Error during image processing: java.lang.IllegalStateException: Wikipedia limiter blocked the request.
+[1]   Done                    curl -X POST -d "topic=smile" http://localhost:8080/api/v1
 [4]   Done                    curl -X POST -d "topic=smile" http://localhost:8080/api/v1
 [5]-  Done                    curl -X POST -d "topic=smile" http://localhost:8080/api/v1
 []
