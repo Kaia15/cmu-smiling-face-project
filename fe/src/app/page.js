@@ -10,7 +10,8 @@ export default function Home() {
 
   return (
     <div>
-      {imageState.images.length > 0 ? <DisplayPage imageState={imageState}/> : <SearchPage imageState={imageState}/>}
+      <DisplayPage imageState={imageState}/>
+      {/* {imageState.images.length > 0 ?  : <SearchPage imageState={imageState}/>} */}
     </div>
   );
 }

@@ -1,5 +1,3 @@
-"use client"
-
 import { useImage } from "@/hooks/useImage";
 import { InputWithButton } from "./InputWithButton";
 import { TypographyH2 } from "./Typographyh2";
@@ -8,118 +6,144 @@ import BoundingPolyViewer from "./BoundingPoly";
 import { getEmotionColor, getEmotionIcon } from "@/lib/helpers";
 
 export default function DisplayPage({ imageState }) {
-    const { images, topic, setTopic, loading, handleSubmit, error } = imageState;
-    console.log(images);
+  const {
+    images,
+    topics,
+    setTopics,
+    loading,
+    handleSubmit,
+    error,
+    handleClear,
+    handleEnter,
+    setInput,
+    input,
+  } = imageState;
+  console.log(images);
 
-    return (
-        <div>
-            <div className="flex flex-row">
-                <div className="flex-1/5">
-                    <TypographyH2 />
-                </div>
-                <div className="flex-4/5">
-                    <InputWithButton
-                        topic={topic}
-                        setTopic={setTopic}
-                        loading={loading}
-                        handleSubmit={handleSubmit}
-                    />
-                </div>
-            </div>
-
-            <Separator className="my-2" />
-            <div className="flex flex-row">
-                <div className="flex-1/5"></div>
-                <div className="flex-4/5">
-                    <p className="text-muted-foreground text-xl">
-                        AI Overview
-                    </p>
-                    <div>
-                        {images?.map((img, imageIdx) => {
-                            const { image, joy, surprise, anger, boundingPoly, note, error } = img;
-                            if (note || error) return (
-                                <div>
-                                    <p> {note} </p>
-                                    <img
-                                        src={image}
-                                        alt="Analyzed"
-                                        className="block max-w-full h-auto"
-                                    />
-                                </div>
-                            )
-                            // return (
-                            //     <img
-                            //             src={image}
-                            //             alt="Analyzed"
-                            //             className="block max-w-full h-auto"
-                            //     />
-                            // )
-
-                            // Helper function to convert likelihood to confidence percentage
-                            const getConfidenceFromLikelihood = (likelihood) => {
-                                const confidenceMap = {
-                                    'VERY_LIKELY': 90,
-                                    'LIKELY': 70,
-                                    'POSSIBLE': 50,
-                                    'UNLIKELY': 30,
-                                    'VERY_UNLIKELY': 10
-                                };
-                                return confidenceMap[likelihood] || 0;
-                            };
-
-                            // Create emotions array for easy mapping
-                            const emotions = [
-                                { name: 'joy', value: joy, icon: '😊' },
-                                { name: 'surprise', value: surprise, icon: '😲' },
-                                { name: 'anger', value: anger, icon: '😠' }
-                            ];
-
-                            return (
-                                <div key={imageIdx} className="flex flex-col space-y-4">
-                                    {/* Emotions Row */}
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                        {emotions.map((emotion) => (
-                                            <div key={emotion.name} className="bg-white/50 rounded-xl p-3 border border-gray-200/50">
-                                                <div className="flex items-center justify-between mb-2">
-                                                    <div className="flex items-center space-x-2">
-                                                        <span className="text-xl">{emotion.icon}</span>
-                                                        <div>
-                                                            <h3 className="font-semibold text-gray-800 capitalize text-sm">{emotion.name}</h3>
-                                                            <p className="text-xs text-gray-600">
-                                                                {emotion.value.replace('_', ' ')}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="text-right">
-                                                        <div className="text-sm font-bold text-gray-800">
-                                                            {getConfidenceFromLikelihood(emotion.value)}%
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                                                    <div
-                                                        className={`h-full ${getEmotionColor(emotion.value)} transition-all duration-1000 ease-out rounded-full`}
-                                                        style={{ width: `${getConfidenceFromLikelihood(emotion.value)}%` }}
-                                                    ></div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-
-                                    {/* Image with Bounding Box */}
-                                    {error ? (
-                                        <p style={{ color: "red" }}>{error}</p>
-                                    ) : (
-                                        <BoundingPolyViewer boundingPoly={boundingPoly} image={image} />
-                                    )}
-                                </div>
-                            );
-                        })}
-
-                    </div>
-                </div>
-            </div>
+  return (
+    <div>
+      <div className="flex flex-row">
+        <div className="flex-1/5">
+          <TypographyH2 />
         </div>
-    )
+        <div className="flex-4/5">
+          <InputWithButton
+            topics={topics}
+            setTopics={setTopics}
+            loading={loading}
+            handleSubmit={handleSubmit}
+            input={input}
+            handleEnter={handleEnter}
+            setInput={setInput}
+            handleClear={handleClear}
+          />
+        </div>
+      </div>
+
+      <div className="flex flex-row">
+        <div className="flex-1/5"></div>
+        <div className="flex-4/5">
+          <div>
+            <p className="text-muted-foreground text-xl">AI Overview</p>
+            <div>
+              There are totally{" "}
+              <span className="font-bold"> {images?.length} </span> topics:
+              <>
+                {images?.map((imagesData, dataId) => (
+                  <span key={dataId} className="mx-1">
+                    {imagesData.topic},
+                    {dataId < images.length - 1 ? ", " : ""}
+                  </span>
+                ))}
+              </>
+            </div>
+          </div>
+
+          <div className="mt-6 space-y-8">
+                        {images?.map((topicData, topicIndex) => (
+                            <div key={topicIndex} className="border rounded-lg p-4">
+                                <h3 className="text-lg font-semibold mb-4 capitalize">
+                                    {topicData.topic}
+                                </h3>
+                                
+                                {/* Grid of images for this topic */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                    {topicData.data?.map((imageData, imageIndex) => (
+                                        <div key={imageIndex} className="relative">
+                                            {imageData.error ? (
+                                                <div className="mt-2 text-sm text-red-600 bg-red-50 p-2 rounded">
+                                                    Error: {imageData.error}
+                                                </div>
+                                            ) : 
+                                            <div className="relative inline-block">
+                                                <img 
+                                                    src={imageData.image} 
+                                                    alt={`${topicData.topic} image ${imageIndex + 1}`}
+                                                    className="w-full h-auto rounded-lg shadow-md"
+                                                />
+                                                
+                                                
+                                                {/* {imageData.boundingPoly && (
+                                                    <BoundingPolyViewer 
+                                                        imageData={imageData}
+                                                        className="absolute inset-0"
+                                                    />
+                                                )} */}
+                                            </div>}
+                                            
+                                            
+                                            {imageData.note && (
+                                                <div className="mt-2 text-sm text-gray-600">
+                                                    {imageData.note}
+                                                </div>
+                                            )}
+                                            
+                                            {/* Face detected - show emotions */}
+                                            {imageData.boundingPoly && (
+                                                <div className="mt-2">
+                                                    <div className="text-sm text-green-600 mb-2">
+                                                        Face detected
+                                                    </div>
+                                                    <div className="flex flex-wrap gap-1">
+                                                        {(() => {
+                                                            const emotions = [];
+                                                            
+                                                            // Create emotions array from image data
+                                                            if (imageData.anger && imageData.anger !== 'UNKNOWN') {
+                                                                emotions.push({ name: 'anger', level: imageData.anger });
+                                                            }
+                                                            if (imageData.joy && imageData.joy !== 'UNKNOWN') {
+                                                                emotions.push({ name: 'joy', level: imageData.joy });
+                                                            }
+                                                            if (imageData.surprise && imageData.surprise !== 'UNKNOWN') {
+                                                                emotions.push({ name: 'surprise', level: imageData.surprise });
+                                                            }
+                                                            
+                                                            return emotions.map((emotion, emotionIndex) => (
+                                                                <span 
+                                                                    key={emotionIndex}
+                                                                    className={`px-2 py-1 rounded-full text-xs text-white ${getEmotionColor(emotion.level)}`}
+                                                                >
+                                                                    {getEmotionIcon(emotion.name)} {emotion.name.charAt(0).toUpperCase() + emotion.name.slice(1)}: {emotion.level}
+                                                                </span>
+                                                            ));
+                                                        })()}
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                                
+                                {/* Topic summary */}
+                                <div className="mt-4 text-sm text-gray-500">
+                                    {topicData.data?.length || 0} images in this topic
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+        </div>
+      </div>
+    </div>
+  );
 }

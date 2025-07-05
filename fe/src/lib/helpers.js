@@ -1,5 +1,5 @@
 export function parseBoundingPoly(rawText) {
-  const lines = rawText.split('\n').map(line => line.trim()).filter(Boolean);
+  const lines = rawText?.split('\n').map(line => line.trim()).filter(Boolean);
   const vertices = [];
 
   for (let i = 0; i < lines.length; i++) {
