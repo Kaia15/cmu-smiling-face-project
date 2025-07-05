@@ -3,9 +3,9 @@ package io.smilingface.utils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,8 +29,8 @@ public class Executor implements IExecutor {
         this.helper = helper;
     }
 
-    public Future<List<Map<String, String>>> submit(String topic) {
-        return executorSrv.submit(() -> {
+    public CompletableFuture<List<Map<String, String>>> submit(String topic) {
+        return CompletableFuture.supplyAsync(() -> {
             List<Map<String, String>> finalResponse = new ArrayList<>();
             if (!this.taskLimiter.tryAcquire()) {
                 throw new IllegalStateException("Reached max capacity of 5 concurrent jobs!");
@@ -44,6 +44,7 @@ public class Executor implements IExecutor {
                 try {
                     List<String> imageUrls = helper.fetchImage(topic);
                     for (String url : imageUrls) {
+                        System.out.println(url);
                         if (this.googleLimiter.tryAcquire()) {
                             try {
                                 finalResponse.add(helper.analyzeImage(url));
@@ -62,7 +63,7 @@ public class Executor implements IExecutor {
             }
 
             return finalResponse;
-        });
+        }, executorSrv);
     }
 
 }
