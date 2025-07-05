@@ -29,6 +29,14 @@ public class Executor implements IExecutor {
         this.helper = helper;
     }
 
+    /* 
+     * Replace `Future' with 'CompletableFuture' (for Java 8+) 
+     * `Future` (old version) primarily uses `.get()` to retrieve the result, which blocks the calling thread (or the main thread) until one "worker" thread ("platform thread") with its computation is complete
+     * `CompletableFuture` (new version) offers `.thenApply()`, `.thenAccept()` to allow for non-blocking operations (complex ASYNC pipelines)
+     * Note: 
+     *  - **Main** thread is not "worker" thread, but it is the one that creates & manages thread pool, and submits jobs.
+     *  - **Worker** threads process the previous jobs concurrently.
+     */
     public CompletableFuture<List<Map<String, String>>> submit(String topic) {
         return CompletableFuture.supplyAsync(() -> {
             List<Map<String, String>> finalResponse = new ArrayList<>();

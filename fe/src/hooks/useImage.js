@@ -14,11 +14,11 @@ export function useImage() {
         setError(null);
         setImages([]);
 
-        const requestTimeoutMs = 30000; // 30 seconds timeout for each individual fetch request
+        const requestTimeoutMs = 600000000; // 30 seconds timeout for each individual fetch request
 
         const mappedFetchRequests = topics.map((topic) => {
             const controller = new AbortController();
-            const id = setTimeout(() => controller.abort(), requestTimeoutMs); // Set timeout for each request
+            const id = setTimeout(() => controller.abort(), requestTimeoutMs); 
 
             const url = `http://localhost:8080/api/v1?topic=${encodeURIComponent(topic)}`;
             console.log(`[Frontend] Initiating fetch for topic: ${topic} to URL: ${url}`);
@@ -69,7 +69,7 @@ export function useImage() {
                     } else {
                         // Handle HTTP errors like 503, 404, etc.
                         const errorText = await res.text(); // Get error body for more info
-                        console.error(`[Frontend] Request for topic: ${topic} failed with HTTP status ${res.status}: ${errorText}`);
+                        console.log(`[Frontend] Request for topic: ${topic} failed with HTTP status ${res.status}: ${errorText}`);
                         failedRequests.push(`Topic: ${topic}, Status: ${res.status}, Error: ${errorText.substring(0, 100)}...`);
                     }
                 } else {

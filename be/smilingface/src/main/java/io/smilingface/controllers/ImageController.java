@@ -36,13 +36,13 @@ public class ImageController {
 
 	@PostMapping
     public CompletableFuture<ResponseEntity<List<Map<String, String>>>> processImage(@RequestParam String topic) {
-        count++;
+        count++; // log count to test whether fe requests reach the end
         System.out.println("Received request for topic: " + topic + ". Total requests initiated: " + count);
 
         return this.imageSrv.imageProcess(topic)
             .handle((result, ex) -> { 
                 if (ex != null) {
-                    
+
                     System.err.println("Error during image processing for topic: " + topic + ": " + ex.getMessage());
                     
                     return ResponseEntity
