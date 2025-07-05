@@ -16,7 +16,9 @@
 
 **3. Solution** 
 
-* 1.1-1.3: Counter Limiter
-* Fundamental Idea: There are multiple threads in ThreadPool, but there are maximum 5 permits allowed to take on the jobs/requests received from the frontend. As one request comes in, one of threads in the pool will pick it up. This thread tries to acquire the permit before running the job => if successful, the job can be processed and rejected otherwise. Once the job completes, the thread releases the permit. Another job, if waiting, acquires the freed permit and starts. **At most 5 jobs** are processed **concurrently at any time**.
+* 1.1-1.3: 
+
+* Counter Limiter: There are multiple threads in ThreadPool, but there are maximum 5 permits allowed to take on the jobs/requests received from the frontend. As one request comes in, one of threads in the pool will pick it up. This thread tries to acquire the permit before running the job => if successful, the job can be processed and rejected otherwise. Once the job completes, the thread releases the permit. Another job, if waiting, acquires the freed permit and starts. **At most 5 jobs** are processed **concurrently at any time**.
+
 * 1.4-5:
-  ![image](https://github.com/user-attachments/assets/7a1ec9db-3043-4763-a297-f2adf3d72b55)
+  

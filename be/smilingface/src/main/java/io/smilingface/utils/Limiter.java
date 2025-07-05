@@ -2,9 +2,7 @@ package io.smilingface.utils;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.springframework.stereotype.Component;
 
-@Component
 public class Limiter implements  ILimiter{
     /* 
     Good choice for concurrency limiter since CPU uses special instructions such as CAS (`compareAndSet()`)
@@ -13,7 +11,13 @@ public class Limiter implements  ILimiter{
 
     // since we cannot parse from `int` to `AtomicInteger`, we use this class's constructor directly
     private AtomicInteger currentReq = new AtomicInteger(0);
-    private final int MAX_CONCURRENT_REQS = 5;
+    private final int MAX_CONCURRENT_REQS;
+    public Limiter(int maxConcurrentRequests) {
+        if (maxConcurrentRequests <= 0) {
+            throw new IllegalArgumentException("Max concurrent requests must be positive.");
+        }
+        this.MAX_CONCURRENT_REQS = maxConcurrentRequests;
+    }
 
     /*
      * successful acquisition means we can process the job and when it's done, 

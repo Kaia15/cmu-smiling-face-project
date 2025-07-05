@@ -70,11 +70,6 @@ export default function DisplayPage({ imageState }) {
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                     {topicData.data?.map((imageData, imageIndex) => (
                                         <div key={imageIndex} className="relative">
-                                            {imageData.error ? (
-                                                <div className="mt-2 text-sm text-red-600 bg-red-50 p-2 rounded">
-                                                    Error: {imageData.error}
-                                                </div>
-                                            ) : 
                                             <div className="relative inline-block">
                                                 <img 
                                                     src={imageData.image} 
@@ -89,15 +84,14 @@ export default function DisplayPage({ imageState }) {
                                                         className="absolute inset-0"
                                                     />
                                                 )} */}
-                                            </div>}
-                                            
-                                            
-                                            {imageData.note && (
-                                                <div className="mt-2 text-sm text-gray-600">
-                                                    {imageData.note}
+                                            </div>
+                                            {(imageData.error || imageData.status) && (
+                                                <div className="mt-2 text-sm text-red-600 bg-red-50 p-2 rounded">
+                                                    Status: {imageData.error || imageData.status}
                                                 </div>
                                             )}
                                             
+      
                                             {/* Face detected - show emotions */}
                                             {imageData.boundingPoly && (
                                                 <div className="mt-2">
