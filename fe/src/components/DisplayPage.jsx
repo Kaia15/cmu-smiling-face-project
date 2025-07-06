@@ -59,15 +59,15 @@ export default function DisplayPage({ imageState }) {
             </div>
           </div>
 
-          <div className="mt-6 space-y-8">
+          <div className="mt-6 flex flex-row">
                         {images?.map((topicData, topicIndex) => (
-                            <div key={topicIndex} className="border rounded-lg p-4">
+                            <div key={topicIndex} className="border rounded-lg p-4 basis-1/2">
                                 <h3 className="text-lg font-semibold mb-4 capitalize">
                                     {topicData.topic}
                                 </h3>
                                 
                                 {/* Grid of images for this topic */}
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <div className="grid grid-cols-2 gap-4">
                                     {topicData.data?.map((imageData, imageIndex) => (
                                         <div key={imageIndex} className="relative">
                                             <div className="relative inline-block">
