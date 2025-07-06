@@ -31,43 +31,36 @@ public class Executor implements IExecutor {
 
     public CompletableFuture<List<Map<String, String>>> submit(String topic) {
         return CompletableFuture.supplyAsync(() -> {
-            System.out.println(Thread.currentThread().getName() + ": Attempting to acquire task limiter for topic: " + topic);
             if (!this.taskLimiter.tryAcquire()) {
                 throw new IllegalStateException("Reached max capacity of 5 concurrent jobs for topic: " + topic + "!");
             }
             return topic;
         }, executorSrv)
         .thenCompose(t -> {
-            // Wikipedia limiter logic (already corrected, but ensure taskLimiter release is correct on early exit)
-            // This is the thread from executorSrv that's processing the task.
             System.out.println(Thread.currentThread().getName() + ": Acquired task limiter. Attempting to acquire Wikipedia limiter for topic: " + t);
 
             if (!this.wikiLimiter.tryAcquire()) {
-                this.taskLimiter.release(); System.out.println(Thread.currentThread().getName() + ": Released task limiter due to Wikipedia limiter blocking for topic: " + t);
+                this.taskLimiter.release(); 
+                System.out.println(Thread.currentThread().getName() + ": Released task limiter due to Wikipedia limiter blocking for topic: " + t);
                 return CompletableFuture.failedFuture(new IllegalStateException("Wikipedia limiter blocked the request for topic: " + t + "."));
             }
 
-            // Wrapping helper.fetchImage with CompletableFuture.supplyAsync
             CompletableFuture<List<String>> fetchImagesFuture = CompletableFuture.supplyAsync(() -> {
                 System.out.println(Thread.currentThread().getName() + ": Acquired Wikipedia limiter. Fetching images for topic: " + t);
-                List<String> imageUrls = helper.fetchImage(t); // Blocking call on wikipediaIoExecutor
+                List<String> imageUrls = helper.fetchImage(t); 
                 System.out.println(Thread.currentThread().getName() + ": Finished fetching images for topic: " + t + ". Found " + imageUrls.size() + " images.");
                 return imageUrls;
             }, executorSrv)
-            .whenComplete((result, ex) -> { // Release wikiLimiter after fetchImage (async) completes
+            .whenComplete((result, ex) -> { 
+                // Release wikiLimiter after fetchImage (async) completes
                 this.wikiLimiter.release();
                 System.out.println(Thread.currentThread().getName() + ": Released Wikipedia limiter for topic: " + t);
             });
 
             // Step 3: Chain image analysis after fetching images
             return fetchImagesFuture.thenCompose(imageUrls -> {
-                System.out.println(Thread.currentThread().getName() + ": Starting image analysis futures creation for topic: " + t);
-
-                // This list will hold futures that represent the *completion* of each analysis,
-                // including the waiting for the Google limiter.
                 List<CompletableFuture<Map<String, String>>> imageAnalysisFutures = imageUrls.stream()
                     .map(url -> {
-                        
                         // 1. Acquire the permit asynchronously
                         CompletableFuture<Void> acquirePermit = CompletableFuture.runAsync(() -> {
                             System.out.println(Thread.currentThread().getName() + ": Waiting to acquire Google limiter for URL: " + url + " (Topic: " + t + ")");
@@ -78,20 +71,21 @@ public class Executor implements IExecutor {
                                 Thread.currentThread().interrupt();
                                 throw new RuntimeException("Interrupted while acquiring Google limiter", e);
                             }
-                        }, executorSrv); // Use a dedicated executor for blocking acquire/API calls
+                        }, executorSrv); 
 
                         // 2. Once the permit is acquired, then initialize image analysis
                         return acquirePermit.thenCompose(v -> CompletableFuture.supplyAsync(() -> {
                             try {
                                 System.out.println(Thread.currentThread().getName() + ": Analyzing image: " + url + " (Topic: " + t + ")");
-                                Map<String, String> analysisResult = helper.analyzeImage(url); // This is blocking for this worker thread
+                                Map<String, String> analysisResult = helper.analyzeImage(url); 
                                 System.out.println(Thread.currentThread().getName() + ": Finished analyzing image: " + url + " (Topic: " + t + ")");
                                 return analysisResult;
                             } catch (Exception err) {
                                 System.err.println(Thread.currentThread().getName() + ": Error analyzing image " + url + " for topic " + t + ": " + err.getMessage());
                                 return Map.of("image", url, "status", "analysis_failed", "error", "HTTP Response Code: 429");
                             } finally {
-                                this.googleLimiter.release(); // Release permit after analysis completes
+                                // Release permit after analysis completes
+                                this.googleLimiter.release(); 
                                 System.out.println(Thread.currentThread().getName() + ": Released Google limiter for URL: " + url + " (Topic: " + t + ")");
                             }
                         }, executorSrv)); // Run the analysis on googleApiExecutor as well
@@ -104,7 +98,7 @@ public class Executor implements IExecutor {
                         .collect(Collectors.toList()));
             });
         })
-        .whenComplete((result, ex) -> { // Final release of taskLimiter
+        .whenComplete((result, ex) -> { 
             this.taskLimiter.release();
             System.out.println(Thread.currentThread().getName() + ": Released task limiter for topic (final completion/error): " + topic);
         })
