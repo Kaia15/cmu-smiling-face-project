@@ -32,7 +32,8 @@ Also, we need to ensure that we do not wait all the requests process sequentiall
 
 As soon as we retrieve the result from previous step in the chained pipeline mentioned in (2), we release the limiter at previous step immediately so it can allow new requests to proceed.
 
-    - Checkpoint 1:
+Checkpoint 1:
+
     ```
     return CompletableFuture.supplyAsync(() -> {
             if (!this.taskLimiter.tryAcquire()) {
@@ -59,7 +60,8 @@ As soon as we retrieve the result from previous step in the chained pipeline men
         })
     ```
     
-    - Checkpoint 2:
+Checkpoint 2:
+
     ```
 
     /*
