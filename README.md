@@ -66,7 +66,7 @@ Meanwhile, we can proceed with these steps in parallel in multiple threads while
 
 * Use `CompletableFuture` & Apply asynchronous functions `.runAsync(), .thenCompose()`: 
 
-As soon as we retrieve the result from the previous step in the chained pipeline mentioned in (2), we release the limiter at the previous step immediately so it can allow new requests to proceed.
+As soon as we retrieve the result from the previous step in the chained pipeline mentioned in (2), we release the limiter at **that** previous step immediately so it can allow new requests to proceed.
 
 Checkpoint 1:
 
@@ -113,7 +113,7 @@ Checkpoint 2:
         try {
             this.googleLimiter.tryAcquire(); 
         } catch (Exception e) {
-            // throw Exception since the GCPLimiter reaches the capacity of 5 (OR 5 requests sent from the list of urls created by `fetchImage` are pending and NONE of those returns back with image analysis result)
+            // throw Exception since the GCPLimiter reaches the capacity of 5 (OR 5 requests sent from the list of urls created by `fetchImage` are pending, and NONE of those returns back with image analysis result)
         }
         }, executorSrv); 
 
