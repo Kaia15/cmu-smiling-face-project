@@ -2,13 +2,7 @@
 
 Inspired by **CMU-17-214** course, in this project, you will work with concurrency in a Java/Spring Boot backend and a React frontend from scratch. You will get experience with writing asynchronous code, with error handling, and with handling state in React, and Java/Spring.
 
-![image](https://github.com/user-attachments/assets/a2d5a92a-1bea-40bf-bf7d-561f6571da3e)
-
-![image](https://github.com/user-attachments/assets/91bf0dd0-f8b9-4f7b-99ee-130446f1700d)
-
-![image](https://github.com/user-attachments/assets/30cef663-3e24-41ee-a7c4-7c5d61c6e835)
-
-![image](https://github.com/user-attachments/assets/57221a13-d439-4e98-9135-f6127ee5ea80)
+https://github.com/user-attachments/assets/cac95d01-49ad-4bb1-b062-7ec3b8a18d8b
 
 ## Introduction
 
