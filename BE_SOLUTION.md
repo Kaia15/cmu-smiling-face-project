@@ -31,6 +31,7 @@ Also, we need to ensure that we do not wait all the requests process sequentiall
 * Use `CompletableFuture` & Apply asynchronous functions `.runAsync(), .thenCompose()`: 
 
 As soon as we retrieve the result from previous step in the chained pipeline mentioned in (2), we release the limiter at previous step immediately so it can allow new requests to proceed.
+
     - Checkpoint 1:
     ```
     return CompletableFuture.supplyAsync(() -> {
@@ -57,6 +58,7 @@ As soon as we retrieve the result from previous step in the chained pipeline men
         ...
         })
     ```
+    
     - Checkpoint 2:
     ```
 
