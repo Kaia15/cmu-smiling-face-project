@@ -22,7 +22,7 @@ There are multiple threads in ThreadPool, but there are maximum 5 permits allowe
     - If acquired, the job can be processed and rejected otherwise. Once the job completes, the thread releases the permit.
     - If waiting (for another later job, within the condition that all the 5 earlier requests are still pending), TaskLimiter rejects the job coming immediately.
 
-* What does **At most 5 jobs** are processed **concurrently at any time** actually mean? 
+* What does **At most 5 jobs are processed concurrently at any time** actually mean? 
 
 No matter how many the number of active threads, each time of proceeding a job, we always check whether the number of requests coming in exceeds the capacity of each limiter (1). 
 
