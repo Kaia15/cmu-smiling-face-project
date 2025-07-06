@@ -63,7 +63,7 @@ There are multiple threads in ThreadPool, but there is a maximum of 5 permits al
 (1) Regardless of the number of active threads, each time we proceed with a job, we always check whether the number of requests coming in exceeds the capacity of each limiter. 
 
 (2) Also, we need to ensure that we do not wait for all the requests to process sequentially with the <u>chained pipeline</u>: 
-**Send URL with "topic" parameter to Wikipedia -> get responses with image URLs -> send each URL to GCP -> get responses with image analysis result.** 
+**Send URL with "topic" parameter to Wikipedia -> get responses with image URLs -> send each image URL to GCP -> get responses with image analysis result.** 
 Meanwhile, we can proceed with these steps in parallel in multiple threads while still maintaining (1).
 
 * Use `CompletableFuture` & Apply asynchronous functions `.runAsync(), .thenCompose()`: 
