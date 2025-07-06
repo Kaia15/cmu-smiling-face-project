@@ -1,10 +1,17 @@
 Received request for topic: rose blackpink. Total requests initiated: 1
+
 Received request for topic: park bo gum. Total requests initiated: 1
+
 pool-2-thread-1: Attempting to acquire task limiter for topic: park bo gum
+
 pool-2-thread-2: Attempting to acquire task limiter for topic: rose blackpink
+
 http-nio-8080-exec-3: Acquired task limiter. Attempting to acquire Wikipedia limiter for topic: park bo gum   
+
 http-nio-8080-exec-4: Acquired task limiter. Attempting to acquire Wikipedia limiter for topic: rose blackpink
+
 pool-2-thread-3: Acquired Wikipedia limiter. Fetching images for topic: park bo gum
+
 pool-2-thread-4: Acquired Wikipedia limiter. Fetching images for topic: rose blackpink
 pool-2-thread-3: Finished fetching images for topic: park bo gum. Found 100 images.
 pool-2-thread-3: Released Wikipedia limiter for topic: park bo gum
