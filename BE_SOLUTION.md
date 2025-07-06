@@ -18,19 +18,19 @@
 
 * Set up & Configure 3 Limiters (GCPLimiter, WikiLimiter, TaskLimiter): 
 
-There are multiple threads in ThreadPool, but there are maximum 5 permits allowed to take on the jobs/requests received from the frontend. As one request comes in, one of threads in the pool will pick it up. This thread tries to acquire the permit before running the job:
-    - If acquired, the job can be processed and rejected otherwise. Once the job completes, the thread releases the permit.
-    - If waiting (for another later job, within the condition that all the 5 earlier requests are still pending), TaskLimiter rejects the job coming immediately.
+There are multiple threads in ThreadPool, but there is a maximum of 5 permits allowed to take on the jobs/requests received from the frontend. As one request comes in, one of the threads in the pool will pick it up. This thread tries to acquire the permit before running the job:
+    - If acquired, the job can be processed and rejected; otherwise. Once the job completes, the thread releases the permit.
+    - If waiting (for another later job, under the condition that all the 5 earlier requests are still pending), TaskLimiter rejects the job immediately.
 
 * What does **At most 5 jobs are processed concurrently at any time** actually mean? 
 
-No matter how many the number of active threads, each time of proceeding a job, we always check whether the number of requests coming in exceeds the capacity of each limiter (1). 
+(1) No matter how many the number of active threads, each time of proceed with a job, we always check whether the number of requests coming in exceeds the capacity of each limiter. 
 
-Also, we need to ensure that we do not wait all the requests process sequentially with the chained pipeline: send url with "topic" parameter to Wikipedia -> get responses with image urls -> send each url to GCP -> get responses with image analysis result. Meanwhile, we can proceed these steps parallelly in multiple threads while still keeping (1) maintain (2).
+(2) Also, we need to ensure that we do not wait for all the requests to process sequentially with the chained pipeline: send URL with "topic" parameter to Wikipedia -> get responses with image URLs -> send each URL to GCP -> get responses with image analysis result. Meanwhile, we can proceed with these steps in parallelly in multiple threads while still keeping (1) maintain.
 
 * Use `CompletableFuture` & Apply asynchronous functions `.runAsync(), .thenCompose()`: 
 
-As soon as we retrieve the result from previous step in the chained pipeline mentioned in (2), we release the limiter at previous step immediately so it can allow new requests to proceed.
+As soon as we retrieve the result from the previous step in the chained pipeline mentioned in (2), we release the limiter at the previous step immediately so it can allow new requests to proceed.
 
 Checkpoint 1:
 
@@ -65,10 +65,10 @@ Checkpoint 2:
     ```
 
     /*
-     * This acquisition for GCP is more complex since it requires long timing to proceed each image, therefore, we need to check and release the permit as soon as 
+     * This acquisition for GCP is more complex since it requires a long time to process each image; therefore, we need to check and release the permit as soon as 
      * GCP returns the response of image analysis on GCPLimiter (CHECKPOINT 2)
      *
-     * Use of `.stream()`: We do not need to wait for all the URL(s) collected in imageUrls but as soon as we get the available urls, we send them first to proceed with * GCP to save time
+     * Use of `.stream()`: We do not need to wait for all the URL(s) collected in imageUrls, but as soon as we get the available URLs, we send them first to proceed with * GCP to save time (Lazily Evaluation)
      */
     
     List<CompletableFuture<Map<String, String>>> imageAnalysisFutures = imageUrls.stream()
