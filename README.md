@@ -1,6 +1,6 @@
 # Facemini
 
-Inspired by **CMU-17-214** course, in this project, you will work with concurrency in a Java/Spring Boot backend and a React frontend from scratch. You will get experience with writing asynchronous code, with error handling, and with handling state in React, and Java/Spring.
+Inspired by **CMU-17-214** course, in this project, you will work with concurrency in a Java/Spring Boot backend and a React frontend from scratch. You will get experience with writing asynchronous code, with error handling, and with handling state in React and Java/Spring.
 
 https://github.com/user-attachments/assets/cac95d01-49ad-4bb1-b062-7ec3b8a18d8b
 
@@ -33,7 +33,7 @@ In the user interface in the web browser you can enter a topic and start the ana
 * The server never makes more than 5 concurrent requests to Wikipedia and never more than 5 concurrent requests to the Google Cloud API in order to not overload those servers (this limit is shared by all jobs).
 * If multiple topics are analyzed, the server does not wait until all images are collected from all topics, but starts analyzing images as soon as the images from each topic are identified.
 
-**Error handling.** Make the implementation robust to errors. Specifically we expect you to handle the following kind of errors:
+**Error handling.** Make the implementation robust to errors. Specifically, we expect you to handle the following kind of errors:
 
 * When connections to Wikipedia or the Google Cloud API fail (error, timeout, or invalid results) retry two more times after a short wait of one second.
 * When connections to Wikipedia or the Google Cloud API fail and cannot be recovered or any other computations fail, report an error message to the frontend gracefully. Your server should still be able to handle 5 concurrent jobs and up to 5 concurrent backend requests afterward.
@@ -41,7 +41,7 @@ In the user interface in the web browser you can enter a topic and start the ana
 
 **Frontend improvements.** Improve the React frontend with some minor extensions
 
-* Allow incremental loading in the frontend, by polling regularly for updates from the backend. (This should work out of the box if the backend responds correctly)
+* Allow incremental loading in the frontend by polling regularly for updates from the backend. (This should work out of the box if the backend responds correctly)
 * Show a progress bar while data is loaded.
 * Show errors from the backend in the frontend, ideally with meaningful error messages.
 
@@ -51,14 +51,16 @@ In the user interface in the web browser you can enter a topic and start the ana
 * Set up & Configure 3 Limiters (GCPLimiter, WikiLimiter, TaskLimiter): 
 
 There are multiple threads in ThreadPool, but there is a maximum of 5 permits allowed to take on the jobs/requests received from the frontend. As one request comes in, one of the threads in the pool will pick it up. This thread tries to acquire the permit before running the job:
+
     - If acquired, the job can be processed and rejected; otherwise. Once the job completes, the thread releases the permit.
+    
     - If waiting (for another later job, under the condition that all the 5 earlier requests are still pending), TaskLimiter rejects the job immediately.
 
-* What does **At most 5 jobs are processed concurrently at any time** actually mean? 
+* What does **At most 5 jobs are processed concurrently at any time** mean? 
 
-(1) No matter how many the number of active threads, each time of proceed with a job, we always check whether the number of requests coming in exceeds the capacity of each limiter. 
+(1) Regardless of the number of active threads, each time we proceed with a job, we always check whether the number of requests coming in exceeds the capacity of each limiter. 
 
-(2) Also, we need to ensure that we do not wait for all the requests to process sequentially with the chained pipeline: send URL with "topic" parameter to Wikipedia -> get responses with image URLs -> send each URL to GCP -> get responses with image analysis result. Meanwhile, we can proceed with these steps in parallelly in multiple threads while still keeping (1) maintain.
+(2) Also, we need to ensure that we do not wait for all the requests to process sequentially with the chained pipeline: ** Send URL with "topic" parameter to Wikipedia -> get responses with image URLs -> send each URL to GCP -> get responses with image analysis result.** Meanwhile, we can proceed with these steps in parallel in multiple threads while still maintaining (1).
 
 * Use `CompletableFuture` & Apply asynchronous functions `.runAsync(), .thenCompose()`: 
 
